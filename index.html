@@ -1168,11 +1168,16 @@
             tbody.innerHTML = '';
             let data = getFilteredWarga();
 
-            // Tambahan: Logika Pencarian Real-time
+            // Tambahan: Logika Pencarian Real-time (ANTI ERROR ANGKA)
             const searchInput = document.getElementById('search-warga');
             if (searchInput && searchInput.value) {
                 const q = searchInput.value.toLowerCase();
-                data = data.filter(w => (w.nama && w.nama.toLowerCase().includes(q)) || (w.nik && w.nik.toLowerCase().includes(q)));
+                data = data.filter(w => {
+                    // Konversi paksa ke String untuk mencegah error dari format angka Google Sheets
+                    const namaSafe = w.nama ? String(w.nama).toLowerCase() : '';
+                    const nikSafe = w.nik ? String(w.nik).toLowerCase() : '';
+                    return namaSafe.includes(q) || nikSafe.includes(q);
+                });
             }
 
             if (data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-sm text-slate-500 italic">Data tidak ditemukan.</td></tr>`; return; }
@@ -1181,12 +1186,15 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50";
                 
+                // Pelindung string replace pada pemanggilan fungsi aksi
+                const namaAman = String(w.nama || '').replace(/'/g, "\\'");
+                
                 // 3 Tombol Aksi: Edit, Hapus, Mutasi
                 const aksi = currentUser.role === 'RT' ? 
                     `<div class="flex flex-wrap gap-1 sm:gap-1.5 justify-end">
                         <button onclick="editWarga(${w.id})" class="text-[10px] sm:text-xs bg-blue-100 text-blue-700 hover:bg-blue-200 px-2 py-1.5 rounded-md font-bold" title="Edit"><i class="fas fa-edit"></i> <span class="hidden sm:inline">Edit</span></button>
-                        <button onclick="hapusWarga(${w.id}, '${(w.nama || '').replace(/'/g, "\\'")}')" class="text-[10px] sm:text-xs bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1.5 rounded-md font-bold" title="Hapus"><i class="fas fa-trash"></i> <span class="hidden sm:inline">Hapus</span></button>
-                        <button onclick="siapkanMutasi(${w.id}, '${(w.nama || '').replace(/'/g, "\\'")}')" class="text-[10px] sm:text-xs bg-rose-100 text-rose-700 hover:bg-rose-200 px-2 py-1.5 rounded-md font-bold" title="Mutasi"><i class="fas fa-exchange-alt"></i> <span class="hidden xl:inline">Mutasi</span></button>
+                        <button onclick="hapusWarga(${w.id}, '${namaAman}')" class="text-[10px] sm:text-xs bg-red-100 text-red-700 hover:bg-red-200 px-2 py-1.5 rounded-md font-bold" title="Hapus"><i class="fas fa-trash"></i> <span class="hidden sm:inline">Hapus</span></button>
+                        <button onclick="siapkanMutasi(${w.id}, '${namaAman}')" class="text-[10px] sm:text-xs bg-rose-100 text-rose-700 hover:bg-rose-200 px-2 py-1.5 rounded-md font-bold" title="Mutasi"><i class="fas fa-exchange-alt"></i> <span class="hidden xl:inline">Mutasi</span></button>
                     </div>` : `<span class="text-xs text-slate-400 italic">Hanya RT</span>`;
                     
                 let bdg = w.domisili === 'Tetap' ? `<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 mt-1 inline-block rounded border border-emerald-200 font-bold">Warga Tetap</span>` : `<span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 mt-1 inline-block rounded font-bold">Pengontrak</span>`;
