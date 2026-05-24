@@ -929,7 +929,7 @@
             const catEl = document.getElementById('filter-kategori-warga');
             if (catEl && catEl.value !== 'Semua') {
                 const v = catEl.value;
-                if (v === 'KK') data = data.filter(w => w.nik === w.kk); // Asumsi Kepala Keluarga adalah yang NIK nya sama dengan No KK
+                if (v === 'KK') data = data.filter(w => String(w.nik).trim() === String(w.kk).trim()); // Perbaikan perbandingan KK (String Aman)
                 else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
                 else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
                 else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
@@ -985,7 +985,7 @@
             const catEl = document.getElementById('filter-kategori-warga');
             if (catEl && catEl.value !== 'Semua') {
                 const v = catEl.value;
-                if (v === 'KK') data = data.filter(w => w.nik === w.kk);
+                if (v === 'KK') data = data.filter(w => String(w.nik).trim() === String(w.kk).trim()); // Perbaikan perbandingan KK (String Aman)
                 else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
                 else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
                 else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
