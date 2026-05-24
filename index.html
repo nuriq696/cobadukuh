@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE htsiml>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -42,7 +42,7 @@
         <div class="glass-card w-11/12 max-w-md rounded-3xl shadow-2xl p-8 sm:p-10 fade-in">
             <div class="text-center mb-8">
                 <!-- GANTI LOGO LOGIN ANDA DI SINI (Ubah atribut src) -->
-                <img src="https://lh3.googleusercontent.com/d/1wnYPH1j-yTzQk_3idkB8VRlxsDxdrGJw" alt="Logo Dukuh-KUDEN" class="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-xl rounded-2xl">
+                <img src="https://lh3.googleusercontent.com/d/1wnYPH1j-yTzQk_3idkB8VRlxsDxdrGJw" alt="Logo Si-Dukuh" class="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-xl rounded-2xl">
                 
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Dukuh-KUDEN</h1>
                 <p class="text-sm font-medium text-slate-500 mt-2">Sistem Informasi Padukuhan Terpadu</p>
@@ -541,8 +541,8 @@
         // ====================================================
         // KONFIGURASI APLIKASI
         // ====================================================
-        const IS_PREVIEW = false; // GANTI JADI false JIKA SUDAH PUNYA URL GAS ASLI DAN AKAN DIDEPLOY KE BLOGGER
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxUTudD6wZ0wi7XRl0e5NpL3HCAfkKh-4i_nI_7kpHNbPM01pjYVvP7eMhNSv7Y2-VDWQ/exec";
+        const IS_PREVIEW = true; // GANTI JADI false JIKA SUDAH PUNYA URL GAS ASLI DAN AKAN DIDEPLOY KE BLOGGER
+        const GAS_URL = "URL_DEPLOY_GAS_ANDA_DISINI";
 
         let currentUser = null;
         let deferredPrompt; 
@@ -562,7 +562,7 @@
             const swUrl = URL.createObjectURL(swBlob);
 
             // GANTI URL DI BAWAH INI DENGAN LINK LOGO (KOTAK 1:1, DISARANKAN PNG) UNTUK IKON APLIKASI HP
-            const iconUrl = "https://lh3.googleusercontent.com/d/1BeqfN_-el02m8srNw5kEtW4UFvVAdy3P"; 
+            const iconUrl = "https://lh3.googleusercontent.com/d/1EFgocN8-x_sEcLOSLgI3hsJidHvslS8q"; 
 
             const appleIcon = document.createElement('link');
             appleIcon.rel = 'apple-touch-icon';
@@ -929,7 +929,18 @@
             const catEl = document.getElementById('filter-kategori-warga');
             if (catEl && catEl.value !== 'Semua') {
                 const v = catEl.value;
-                if (v === 'KK') data = data.filter(w => String(w.nik).trim() === String(w.kk).trim()); // Perbaikan perbandingan KK (String Aman)
+                if (v === 'KK') {
+                    // LOGIKA BARU: Tampilkan hanya 1 perwakilan untuk setiap No. KK yang unik
+                    let seenKK = new Set();
+                    data = data.filter(w => {
+                        const kkStr = String(w.kk).trim();
+                        if (!seenKK.has(kkStr) && kkStr !== '') {
+                            seenKK.add(kkStr);
+                            return true;
+                        }
+                        return false;
+                    });
+                }
                 else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
                 else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
                 else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
@@ -985,7 +996,18 @@
             const catEl = document.getElementById('filter-kategori-warga');
             if (catEl && catEl.value !== 'Semua') {
                 const v = catEl.value;
-                if (v === 'KK') data = data.filter(w => String(w.nik).trim() === String(w.kk).trim()); // Perbaikan perbandingan KK (String Aman)
+                if (v === 'KK') {
+                    // LOGIKA BARU UNTUK CETAK: Tampilkan hanya 1 perwakilan untuk setiap No. KK yang unik
+                    let seenKK = new Set();
+                    data = data.filter(w => {
+                        const kkStr = String(w.kk).trim();
+                        if (!seenKK.has(kkStr) && kkStr !== '') {
+                            seenKK.add(kkStr);
+                            return true;
+                        }
+                        return false;
+                    });
+                }
                 else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
                 else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
                 else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
