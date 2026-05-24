@@ -248,15 +248,38 @@
 
                 <!-- ================= VIEW: DATA WARGA ================= -->
                 <div id="view-warga" class="view-section hidden fade-in w-full">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                        <button id="btn-tambah-warga" onclick="openModal('modal-warga'); document.getElementById('form-warga').reset(); document.getElementById('warga-id').value=''; document.getElementById('modal-warga-title').innerText='Form Data Warga'; document.getElementById('w-jalur-container').classList.remove('hidden');" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition-all flex w-full sm:w-auto justify-center items-center">
-                            <i class="fas fa-plus mr-2"></i> Tambah Warga Baru
-                        </button>
+                    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
+                        <!-- Tombol Aksi -->
+                        <div class="flex flex-wrap gap-2 w-full xl:w-auto">
+                            <button id="btn-tambah-warga" onclick="openModal('modal-warga'); document.getElementById('form-warga').reset(); document.getElementById('warga-id').value=''; document.getElementById('modal-warga-title').innerText='Form Data Warga'; document.getElementById('w-jalur-container').classList.remove('hidden');" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition-all flex flex-1 sm:flex-none justify-center items-center text-sm">
+                                <i class="fas fa-plus mr-2"></i> Tambah Warga
+                            </button>
+                            <button onclick="cetakDataWarga()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2.5 rounded-xl shadow-lg transition-all flex flex-1 sm:flex-none justify-center items-center text-sm">
+                                <i class="fas fa-print mr-2"></i> Cetak Data
+                            </button>
+                        </div>
                         
-                        <!-- Search Bar Interaktif -->
-                        <div class="relative w-full sm:w-72">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"><i class="fas fa-search text-slate-400"></i></div>
-                            <input type="text" id="search-warga" onkeyup="renderTableWarga()" placeholder="Cari NIK atau Nama..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium shadow-sm transition-all">
+                        <!-- Filter dan Search -->
+                        <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+                            <!-- Dropdown Filter Kategori -->
+                            <select id="filter-kategori-warga" onchange="renderTableWarga()" class="w-full sm:w-48 px-3 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold text-slate-700 shadow-sm cursor-pointer transition-all">
+                                <option value="Semua">Semua Warga</option>
+                                <option value="KK">Kepala Keluarga (KK)</option>
+                                <option value="L">Laki-Laki (L)</option>
+                                <option value="P">Perempuan (P)</option>
+                                <option value="Balita">Usia Balita (0-5)</option>
+                                <option value="Anak">Usia Anak (6-10)</option>
+                                <option value="Remaja">Usia Remaja (11-18)</option>
+                                <option value="Dewasa">Usia Dewasa (19-50)</option>
+                                <option value="Lansia">Usia Lansia (>50)</option>
+                                <option value="Pengontrak">Pengontrak / Kos</option>
+                            </select>
+
+                            <!-- Search Bar Interaktif -->
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"><i class="fas fa-search text-slate-400"></i></div>
+                                <input type="text" id="search-warga" onkeyup="renderTableWarga()" placeholder="Cari NIK atau Nama..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium shadow-sm transition-all">
+                            </div>
                         </div>
                     </div>
 
@@ -539,7 +562,7 @@
             const swUrl = URL.createObjectURL(swBlob);
 
             // GANTI URL DI BAWAH INI DENGAN LINK LOGO (KOTAK 1:1, DISARANKAN PNG) UNTUK IKON APLIKASI HP
-            const iconUrl = "https://placehold.co/512x512/4f46e5/ffffff?text=Icon"; 
+            const iconUrl = "https://lh3.googleusercontent.com/d/1BeqfN_-el02m8srNw5kEtW4UFvVAdy3P"; 
 
             const appleIcon = document.createElement('link');
             appleIcon.rel = 'apple-touch-icon';
@@ -829,7 +852,7 @@
                 const isBalita = currentUser.rt === 'Posyandu Balita'; let targetTotal = 0, targetL = 0, targetP = 0;
                 
                 dbWarga.filter(w => w.status === 'Aktif').forEach(w => {
-                    const u = hitungUmur(w.tgl); let isTargetAge = isBalita ? (u <= 4) : (u >= 60);
+                    const u = hitungUmur(w.tgl); let isTargetAge = isBalita ? (u <= 5) : (u > 50);
                     if (isTargetAge) { targetTotal++; if(w.jk === 'L') targetL++; if(w.jk === 'P') targetP++; }
                 });
 
@@ -863,7 +886,7 @@
             document.getElementById('stat-pengontrak').innerText = data.filter(w => w.domisili === 'Pengontrak').length;
             
             let cB=0, cA=0, cR=0, cD=0, cL=0;
-            data.forEach(w => { const u = hitungUmur(w.tgl); if(u <= 4) cB++; else if(u <= 11) cA++; else if(u <= 25) cR++; else if(u <= 59) cD++; else cL++; });
+            data.forEach(w => { const u = hitungUmur(w.tgl); if(u <= 5) cB++; else if(u <= 10) cA++; else if(u <= 18) cR++; else if(u <= 50) cD++; else cL++; });
             document.getElementById('u-balita').innerText = cB; document.getElementById('u-anak').innerText = cA; document.getElementById('u-remaja').innerText = cR; document.getElementById('u-dewasa').innerText = cD; document.getElementById('u-lansia').innerText = cL;
 
             let mScope = dbMutasi;
@@ -875,15 +898,17 @@
 
             const agendaDiv = document.getElementById('dashboard-agenda-list'); agendaDiv.innerHTML = '';
             let kData = dbKegiatan;
+            
             if (currentUser.role === 'RT') kData = kData.filter(k => k.rt_pembuat === currentUser.rt || k.organisasi === currentUser.rt);
             else { const f = document.getElementById('dukuh-filter').value; if(f !== 'Semua') kData = kData.filter(k => k.rt_pembuat === f || k.organisasi === f); }
 
-            if(kData.length === 0) agendaDiv.innerHTML = `<p class="text-sm text-slate-500 italic">Belum ada agenda.</p>`;
+            if(kData.length === 0) agendaDiv.innerHTML = `<p class="text-sm text-slate-500 italic">Belum ada agenda terbaru.</p>`;
             else {
                 kData.sort((a,b) => b.id - a.id).slice(0,3).forEach(k => {
+                    const ini = (k.organisasi || '').substring(0,3).toUpperCase();
                     agendaDiv.innerHTML += `
                         <div class="flex items-start pb-4 border-b border-slate-100 last:border-0 last:pb-0">
-                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs shrink-0 mr-3 mt-1">${(k.organisasi || '').substring(0,3).toUpperCase()}</div>
+                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs shrink-0 mr-3 mt-1">${ini}</div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between mb-1"><h4 class="text-sm font-bold text-slate-800">${k.agenda}</h4><span class="text-[10px] font-bold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-md ml-2 whitespace-nowrap">${k.organisasi}</span></div>
                                 <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">${k.keputusan}</p>
@@ -893,10 +918,28 @@
             }
         }
 
+        // DATA WARGA & MUTASI
         function renderTableWarga() {
-            const tbody = document.getElementById('warga-tbody'); tbody.innerHTML = '';
+            const tbody = document.getElementById('warga-tbody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
             let data = getFilteredWarga();
 
+            // 1. Proses Filter Kategori Dropdown
+            const catEl = document.getElementById('filter-kategori-warga');
+            if (catEl && catEl.value !== 'Semua') {
+                const v = catEl.value;
+                if (v === 'KK') data = data.filter(w => w.nik === w.kk); // Asumsi Kepala Keluarga adalah yang NIK nya sama dengan No KK
+                else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
+                else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
+                else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
+                else if (v === 'Remaja') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 11 && u <= 18; });
+                else if (v === 'Dewasa') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 19 && u <= 50; });
+                else if (v === 'Lansia') data = data.filter(w => hitungUmur(w.tgl) > 50);
+                else if (v === 'Pengontrak') data = data.filter(w => w.domisili === 'Pengontrak');
+            }
+
+            // 2. Proses Search Bar Text
             const searchInput = document.getElementById('search-warga');
             if (searchInput && searchInput.value) {
                 const q = searchInput.value.toLowerCase();
@@ -933,6 +976,110 @@
                                 <td class="px-4 sm:px-6 py-4 text-right">${aksi}</td>`;
                 tbody.appendChild(tr);
             });
+        }
+
+        function cetakDataWarga() {
+            // Ambil data yang sedang ter-filter saat ini (mendekati logika renderTableWarga)
+            let data = getFilteredWarga();
+            
+            const catEl = document.getElementById('filter-kategori-warga');
+            if (catEl && catEl.value !== 'Semua') {
+                const v = catEl.value;
+                if (v === 'KK') data = data.filter(w => w.nik === w.kk);
+                else if (v === 'L' || v === 'P') data = data.filter(w => w.jk === v);
+                else if (v === 'Balita') data = data.filter(w => hitungUmur(w.tgl) <= 5);
+                else if (v === 'Anak') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 6 && u <= 10; });
+                else if (v === 'Remaja') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 11 && u <= 18; });
+                else if (v === 'Dewasa') data = data.filter(w => { let u = hitungUmur(w.tgl); return u >= 19 && u <= 50; });
+                else if (v === 'Lansia') data = data.filter(w => hitungUmur(w.tgl) > 50);
+                else if (v === 'Pengontrak') data = data.filter(w => w.domisili === 'Pengontrak');
+            }
+
+            const searchInput = document.getElementById('search-warga');
+            if (searchInput && searchInput.value) {
+                const q = searchInput.value.toLowerCase();
+                data = data.filter(w => (w.nama||'').toLowerCase().includes(q) || (w.nik||'').toLowerCase().includes(q));
+            }
+
+            if(data.length === 0) {
+                showToast("Tidak ada data untuk dicetak!");
+                return;
+            }
+
+            // Buat struktur tabel untuk di-print
+            let printWindow = window.open('', '_blank');
+            const judulFilter = catEl && catEl.value !== 'Semua' ? catEl.options[catEl.selectedIndex].text : 'Semua Data';
+            const wilayahInfo = currentUser.role === 'RT' ? currentUser.rt : (document.getElementById('dukuh-filter') ? document.getElementById('dukuh-filter').value : 'Semua Wilayah');
+            
+            let html = `
+            <!DOCTYPE html>
+            <html><head><title>Cetak Data Warga - Si-Dukuh</title>
+            <style>
+                body { font-family: 'Arial', sans-serif; padding: 20px; color: #333; line-height: 1.4; }
+                .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+                h1 { margin: 0 0 5px 0; font-size: 24px; }
+                p { margin: 0; font-size: 14px; }
+                .info { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; font-weight: bold; }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+                th, td { border: 1px solid #666; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
+                .text-center { text-align: center; }
+                @media print { body { padding: 0; } }
+            </style>
+            </head><body>
+            <div class="header">
+                <h1>Data Kependudukan (Si-Dukuh)</h1>
+                <p>Dokumen Resmi Administrasi Padukuhan</p>
+            </div>
+            <div class="info">
+                <span>Wilayah: ${wilayahInfo}</span>
+                <span>Kategori: ${judulFilter}</span>
+                <span>Total Data: ${data.length} Jiwa</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th width="15%">No. KK</th>
+                        <th width="15%">NIK</th>
+                        <th width="25%">Nama Lengkap</th>
+                        <th width="5%">L/P</th>
+                        <th width="10%">Umur</th>
+                        <th width="10%">Wilayah</th>
+                        <th width="15%">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            data.forEach((w, i) => {
+                const ket = w.domisili === 'Tetap' ? 'Warga Tetap' : 'Pengontrak';
+                // Tanda kutip tunggal (') sengaja ditambahkan sebelum NIK & KK agar jika di-copy ke Excel formatnya tidak rusak (tidak jadi rumus/angka desimal)
+                html += `<tr>
+                    <td class="text-center">${i+1}</td>
+                    <td>'${w.kk}</td>
+                    <td>'${w.nik}</td>
+                    <td>${w.nama}</td>
+                    <td class="text-center">${w.jk}</td>
+                    <td class="text-center">${hitungUmur(w.tgl)} Th</td>
+                    <td class="text-center">${w.rt}</td>
+                    <td>${ket}</td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>
+            <div style="margin-top: 30px; font-size: 12px; text-align: right;">
+                <p>Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
+                <p>Oleh: ${currentUser.username.toUpperCase()} (${currentUser.role})</p>
+            </div>
+            <script>
+                window.onload = function() { 
+                    setTimeout(() => { window.print(); window.close(); }, 500);
+                }
+            <\/script>
+            </body></html>`;
+
+            printWindow.document.write(html);
+            printWindow.document.close();
         }
 
         function simpanWarga(e) {
