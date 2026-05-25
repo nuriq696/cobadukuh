@@ -532,8 +532,8 @@
         // ====================================================
         // KONFIGURASI APLIKASI
         // ====================================================
-        const IS_PREVIEW = false; // GANTI JADI false JIKA SUDAH PUNYA URL GAS ASLI DAN AKAN DIDEPLOY KE BLOGGER
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbyWCEccLsPzv-cYyuWmev6JYs1yXmk3tl3Wp-sy-r_AEq5d168_hN0WVwe7501PK8QrYw/exec";
+        const IS_PREVIEW = true; // GANTI JADI false JIKA SUDAH PUNYA URL GAS ASLI DAN AKAN DIDEPLOY KE BLOGGER
+        const GAS_URL = "URL_DEPLOY_GAS_ANDA_DISINI";
 
         let currentUser = null;
         let deferredPrompt; 
@@ -889,7 +889,7 @@
         // FUNGSI BROADCAST WA
         function formatWaNumber(phone) {
             if (!phone) return '';
-            let cleaned = phone.replace(/\D/g, '');
+            let cleaned = String(phone).replace(/\D/g, '');
             if (cleaned.startsWith('0')) cleaned = '62' + cleaned.substring(1);
             else if (cleaned.startsWith('8')) cleaned = '62' + cleaned;
             return cleaned;
@@ -913,7 +913,8 @@
             const msgTemplate = document.getElementById('bc-pesan').value;
             const tb = document.getElementById('bc-tbody'); tb.innerHTML = '';
             
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && w.telepon.trim().length >= 8);
+            // Konversi ke String agar aman jika data dari sheet terbaca sebagai Number
+            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
             
             if (target === 'KK') {
                 let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; });
@@ -1037,7 +1038,7 @@
 
         function copyAllWaNumbers() {
             const target = document.getElementById('bc-target').value;
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && w.telepon.trim().length >= 8);
+            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
             if (target === 'KK') { let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; }); } 
             else if (target.startsWith('RT')) d = d.filter(w => w.rt === target);
             else if (target !== 'Semua') d = d.filter(w => w.bantuan && w.bantuan.includes(target));
@@ -1054,7 +1055,7 @@
 
         function exportVCard() {
             const target = document.getElementById('bc-target').value;
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && w.telepon.trim().length >= 8);
+            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
             
             if (target === 'KK') {
                 let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; });
