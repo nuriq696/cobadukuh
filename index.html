@@ -337,8 +337,8 @@
                         <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 p-5 sm:p-6 lg:col-span-1 h-fit">
                             <h3 class="text-lg font-extrabold text-slate-800 mb-4 flex items-center"><i class="fab fa-whatsapp text-emerald-500 mr-3 text-xl"></i> Tulis Pesan WA</h3>
                             
-                            <div class="mb-4 bg-blue-50 border border-blue-100 p-3 rounded-xl">
-                                <p class="text-[10px] text-blue-800 leading-relaxed font-medium"><i class="fas fa-info-circle mr-1"></i> <b>Info Kirim Massal:</b> Browser web memblokir pembukaan puluhan WhatsApp sekaligus. Sistem ini menggunakan mode <b>Antrean</b> agar aman dari blokir.</p>
+                            <div class="mb-4 bg-amber-50 border border-amber-100 p-3 rounded-xl">
+                                <p class="text-[10px] text-amber-800 leading-relaxed font-medium"><i class="fas fa-exclamation-triangle mr-1"></i> <b>Peringatan Mode Otomatis:</b> Sistem akan membuka tab baru setiap 0.5 detik. Pastikan Anda <b>MENGIZINKAN POP-UP (Allow Pop-ups)</b> pada setelan browser Anda agar pengiriman tidak diblokir.</p>
                             </div>
 
                             <div class="space-y-4">
@@ -383,8 +383,8 @@
                                     <h4 class="font-extrabold text-emerald-800 text-sm">Sistem Antrean Kirim Massal</h4>
                                     <p class="text-xs text-emerald-600 font-medium mt-1" id="bulk-progress-text">Pesan belum ditulis.</p>
                                 </div>
-                                <button id="btn-bulk-send" onclick="processNextBulkSend()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm flex items-center justify-center">
-                                    <i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Massal
+                                <button id="btn-bulk-send" onclick="toggleBulkSend()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm flex items-center justify-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Otomatis
                                 </button>
                             </div>
 
@@ -898,14 +898,17 @@
         let broadcastQueue = [];
         let currentBroadcastIndex = 0;
         let broadcastMsgTemplate = '';
+        let isBulkSending = false;
 
         function renderBroadcast() {
             document.getElementById('bc-target').value = 'Semua';
             document.getElementById('bc-pesan').value = '';
+            isBulkSending = false;
             previewBroadcast();
         }
 
         function previewBroadcast() {
+            isBulkSending = false;
             const target = document.getElementById('bc-target').value;
             const msgTemplate = document.getElementById('bc-pesan').value;
             const tb = document.getElementById('bc-tbody'); tb.innerHTML = '';
@@ -933,9 +936,10 @@
             if (d.length > 0 && msgTemplate.trim() !== '') {
                 bulkContainer.classList.remove('hidden');
                 bulkContainer.classList.add('flex');
-                progText.innerHTML = `Siap mengirim ke <b>${d.length}</b> warga terpilih.`;
-                btnBulk.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Massal`;
+                progText.innerHTML = `Siap mengirim ke <b>${d.length}</b> warga secara otomatis.`;
+                btnBulk.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Otomatis`;
                 btnBulk.disabled = false;
+                btnBulk.onclick = toggleBulkSend;
                 btnBulk.className = "w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm flex items-center justify-center";
             } else {
                 bulkContainer.classList.add('hidden');
@@ -972,9 +976,32 @@
             btn.innerHTML = '<i class="fas fa-check-double sm:mr-1.5 text-sm"></i> <span class="hidden sm:inline">Terkirim</span>';
         }
 
+        function toggleBulkSend() {
+            const btnBulk = document.getElementById('btn-bulk-send');
+            if (isBulkSending) {
+                // Jeda Pengiriman
+                isBulkSending = false;
+                btnBulk.innerHTML = `<i class="fas fa-play mr-2"></i> Lanjut Otomatis (${currentBroadcastIndex}/${broadcastQueue.length})`;
+                btnBulk.classList.replace('bg-amber-500', 'bg-blue-600');
+                btnBulk.classList.replace('hover:bg-amber-600', 'hover:bg-blue-700');
+                showToast("Pengiriman otomatis dijeda sementara.");
+            } else {
+                // Mulai Pengiriman
+                isBulkSending = true;
+                btnBulk.innerHTML = `<i class="fas fa-pause mr-2"></i> Jeda Pengiriman`;
+                btnBulk.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'bg-blue-600', 'hover:bg-blue-700');
+                btnBulk.classList.add('bg-amber-500', 'hover:bg-amber-600');
+                showToast("Memulai pengiriman otomatis setiap 0.5 detik...");
+                processNextBulkSend();
+            }
+        }
+
         function processNextBulkSend() {
+            if (!isBulkSending) return;
+
             if (currentBroadcastIndex >= broadcastQueue.length) {
-                showToast("Pengiriman massal selesai!");
+                isBulkSending = false;
+                showToast("Pengiriman massal otomatis selesai!");
                 document.getElementById('bulk-progress-text').innerHTML = "<b>Selesai dikirim</b> ke semua target.";
                 const btnBulk = document.getElementById('btn-bulk-send');
                 btnBulk.innerHTML = `<i class="fas fa-check-double mr-2"></i> Selesai`;
@@ -992,11 +1019,6 @@
             currentBroadcastIndex++;
             document.getElementById('bulk-progress-text').innerHTML = `Antrean: Mengirim <b>${currentBroadcastIndex}</b> dari <b>${broadcastQueue.length}</b><br><span class="text-[10px] text-slate-500">Target: ${w.nama}</span>`;
             
-            const btnBulk = document.getElementById('btn-bulk-send');
-            btnBulk.innerHTML = `<i class="fas fa-forward mr-2"></i> Lanjut Kirim (${currentBroadcastIndex}/${broadcastQueue.length})`;
-            btnBulk.classList.replace('bg-emerald-600', 'bg-blue-600');
-            btnBulk.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-700');
-
             // Tandai baris tabel terkirim
             const rowBtn = document.getElementById(`btn-wa-${w.id}`);
             if (rowBtn) tandaiTerkirimIndividu(rowBtn);
@@ -1006,6 +1028,11 @@
 
             // Buka Tab WA
             window.open(waLink, '_blank');
+
+            // Setengah Detik (500 ms) delay sebelum lanjut ke kontak berikutnya
+            setTimeout(() => {
+                if(isBulkSending) processNextBulkSend();
+            }, 500);
         }
 
         function copyAllWaNumbers() {
