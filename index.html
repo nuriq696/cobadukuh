@@ -108,7 +108,7 @@
                 <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6">Administrasi</p>
                 <a href="#" onclick="switchView('laporan')" id="nav-laporan" class="flex items-center px-4 py-3.5 text-sm font-semibold rounded-xl text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors focus:ring-2 focus:ring-indigo-500 outline-none"><i class="fas fa-file-alt w-6 text-center text-lg mr-3"></i> Laporan Bulanan</a>
                 <div id="menu-admin" class="hidden">
-                    <a href="#" onclick="switchView('broadcast')" id="nav-broadcast" class="flex items-center px-4 py-3.5 text-sm font-semibold rounded-xl text-slate-600 hover:bg-slate-50 hover:text-emerald-600 transition-colors focus:ring-2 focus:ring-emerald-500 outline-none"><i class="fab fa-whatsapp w-6 text-center text-lg mr-3 text-emerald-500"></i> Broadcast WA</a>
+                    <a href="#" onclick="switchView('pengumuman')" id="nav-pengumuman" class="flex items-center px-4 py-3.5 text-sm font-semibold rounded-xl text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors focus:ring-2 focus:ring-orange-500 outline-none"><i class="fas fa-bullhorn w-6 text-center text-lg mr-3 text-orange-500"></i> Papan Pengumuman</a>
                     <a href="#" onclick="switchView('pengguna')" id="nav-pengguna" class="flex items-center px-4 py-3.5 text-sm font-semibold rounded-xl text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors focus:ring-2 focus:ring-indigo-500 outline-none"><i class="fas fa-user-cog w-6 text-center text-lg mr-3"></i> Kelola Pengguna</a>
                 </div>
             </nav>
@@ -145,6 +145,10 @@
             <div class="flex-1 overflow-y-auto p-4 sm:p-8 no-scrollbar w-full">
                 <!-- ================= VIEW: DASHBOARD ================= -->
                 <div id="view-dashboard" class="view-section fade-in w-full">
+                    
+                    <!-- AREA PAPAN PENGUMUMAN DI DASHBOARD -->
+                    <div id="dashboard-pengumuman" class="w-full space-y-4 mb-6 sm:mb-8 empty:hidden"></div>
+
                     <div id="dashboard-main-content">
                         <!-- Top Stats Cards -->
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -255,14 +259,18 @@
                                     <option value="Pendapatan_3 Juta - 5 Juta">Pendapatan: 3 - 5 Juta</option>
                                     <option value="Pendapatan_> 5 Juta">Pendapatan: &gt; 5 Juta</option>
                                 </optgroup>
-                                <optgroup label="Pekerjaan Umum">
-                                    <option value="Pekerjaan_pegawai negeri">Pekerjaan: Pegawai Negeri / PNS</option>
-                                    <option value="Pekerjaan_swasta">Pekerjaan: Pegawai Swasta</option>
-                                    <option value="Pekerjaan_wiraswasta">Pekerjaan: Wiraswasta / Pedagang</option>
-                                    <option value="Pekerjaan_petani">Pekerjaan: Petani / Pekebun</option>
-                                    <option value="Pekerjaan_buruh">Pekerjaan: Buruh</option>
-                                    <option value="Pekerjaan_pelajar">Pekerjaan: Pelajar / Mahasiswa</option>
-                                    <option value="Pekerjaan_ibu rumah tangga">Pekerjaan: Ibu Rumah Tangga</option>
+                                <optgroup label="Pekerjaan Utama">
+                                    <option value="Pekerjaan_Belum / Tidak Bekerja">Pekerjaan: Belum / Tidak Bekerja</option>
+                                    <option value="Pekerjaan_Pelajar / Mahasiswa">Pekerjaan: Pelajar / Mahasiswa</option>
+                                    <option value="Pekerjaan_Ibu Rumah Tangga">Pekerjaan: Ibu Rumah Tangga</option>
+                                    <option value="Pekerjaan_Pegawai Negeri / PNS">Pekerjaan: Pegawai Negeri / PNS</option>
+                                    <option value="Pekerjaan_TNI / POLRI">Pekerjaan: TNI / POLRI</option>
+                                    <option value="Pekerjaan_Pegawai Swasta">Pekerjaan: Pegawai Swasta</option>
+                                    <option value="Pekerjaan_Wiraswasta / Pedagang">Pekerjaan: Wiraswasta / Pedagang</option>
+                                    <option value="Pekerjaan_Petani / Pekebun">Pekerjaan: Petani / Pekebun</option>
+                                    <option value="Pekerjaan_Buruh">Pekerjaan: Buruh</option>
+                                    <option value="Pekerjaan_Pensiunan">Pekerjaan: Pensiunan</option>
+                                    <option value="Pekerjaan_Lainnya">Pekerjaan: Lainnya</option>
                                 </optgroup>
                             </select>
 
@@ -331,75 +339,23 @@
                     <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden w-full"><div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-100"><thead class="bg-slate-50/50"><tr><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Periode</th><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Pelapor</th><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Total Warga</th><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">L/P</th><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase hidden md:table-cell">Mutasi</th><th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Status</th></tr></thead><tbody id="laporan-tbody" class="bg-white divide-y divide-slate-100"></tbody></table></div></div>
                 </div>
 
-                <!-- HTML Broadcast WA -->
-                <div id="view-broadcast" class="view-section hidden fade-in w-full">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 p-5 sm:p-6 lg:col-span-1 h-fit">
-                            <h3 class="text-lg font-extrabold text-slate-800 mb-4 flex items-center"><i class="fab fa-whatsapp text-emerald-500 mr-3 text-xl"></i> Tulis Pesan WA</h3>
-                            
-                            <div class="mb-4 bg-amber-50 border border-amber-100 p-3 rounded-xl">
-                                <p class="text-[10px] text-amber-800 leading-relaxed font-medium"><i class="fas fa-exclamation-triangle mr-1"></i> <b>Peringatan Mode Otomatis:</b> Sistem akan membuka tab baru setiap 0.5 detik. Pastikan Anda <b>MENGIZINKAN POP-UP (Allow Pop-ups)</b> pada setelan browser Anda agar pengiriman tidak diblokir.</p>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Target Penerima</label>
-                                    <select id="bc-target" onchange="previewBroadcast()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm font-bold text-slate-700 cursor-pointer focus:ring-2 focus:ring-emerald-500">
-                                        <option value="Semua">Semua Warga Terdaftar</option>
-                                        <option value="KK">Hanya Kepala Keluarga (KK)</option>
-                                        <option value="RT 01">Warga RT 01</option><option value="RT 02">Warga RT 02</option><option value="RT 03">Warga RT 03</option><option value="RT 04">Warga RT 04</option><option value="RT 05">Warga RT 05</option><option value="RT 06">Warga RT 06</option><option value="RT 07">Warga RT 07</option><option value="RT 08">Warga RT 08</option><option value="RT 09">Warga RT 09</option>
-                                        <option value="PKH">Penerima Bantuan PKH</option><option value="BPNT">Penerima Bantuan BPNT</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Isi Pesan (Boleh Kosong)</label>
-                                    <textarea id="bc-pesan" rows="6" onkeyup="previewBroadcast()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm focus:ring-2 focus:ring-emerald-500" placeholder="Tulis pengumuman di sini...&#10;&#10;Gunakan [NAMA] untuk menyebut nama panggilan warga secara otomatis."></textarea>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-3 mt-2">
-                                    <button onclick="copyAllWaNumbers()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg transition-all text-xs flex items-center justify-center">
-                                        <i class="fas fa-copy mr-2"></i> Salin Nomor
-                                    </button>
-                                    <button onclick="exportVCard()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all text-xs flex items-center justify-center">
-                                        <i class="fas fa-address-book mr-2"></i> Simpan ke HP (.vcf)
-                                    </button>
-                                </div>
-                                <p class="text-[10px] text-slate-500 font-medium text-justify leading-relaxed mt-3 bg-slate-100 p-3 rounded-xl">
-                                    <b>💡 Tips Membuat Broadcast WA Sekali Kirim:</b><br>
-                                    Karena WhatsApp menolak pembuatan grup otomatis dari web, gunakan tombol <b>Simpan ke HP</b> di atas. Buka file yang diunduh di HP Anda untuk menyimpan semua nomor target ke buku telepon secara otomatis. Setelah tersimpan, Anda bisa membuat <i>"Daftar Siaran" (Broadcast List)</i> langsung dari aplikasi WhatsApp dengan sangat mudah.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden lg:col-span-2 flex flex-col h-[70vh] lg:h-auto">
-                            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                                <h3 class="font-extrabold text-slate-800 text-lg">Daftar Penerima (<span id="bc-count">0</span>)</h3>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-info-circle mr-1"></i> Hanya yang mempunyai no. WA</span>
-                            </div>
-                            
-                            <!-- AREA KONTROL KIRIM MASSAL (ANTREAN) -->
-                            <div class="p-4 bg-emerald-50 border-b border-emerald-100 hidden flex-col sm:flex-row justify-between items-center" id="bulk-send-container">
-                                <div class="mb-3 sm:mb-0 text-center sm:text-left">
-                                    <h4 class="font-extrabold text-emerald-800 text-sm">Sistem Antrean Kirim Massal</h4>
-                                    <p class="text-xs text-emerald-600 font-medium mt-1" id="bulk-progress-text">Pesan belum ditulis.</p>
-                                </div>
-                                <button id="btn-bulk-send" onclick="toggleBulkSend()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm flex items-center justify-center">
-                                    <i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Otomatis
-                                </button>
-                            </div>
-
-                            <div class="overflow-x-auto flex-1 p-0">
-                                <table class="min-w-full divide-y divide-slate-100">
-                                    <thead class="bg-slate-50/30">
-                                        <tr>
-                                            <th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Nama & Wilayah</th>
-                                            <th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">No. WhatsApp</th>
-                                            <th class="px-6 py-4 text-right text-xs font-extrabold text-slate-500 uppercase">Tindakan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bc-tbody" class="bg-white divide-y divide-slate-100"></tbody>
-                                </table>
-                            </div>
+                <!-- HTML Pengumuman (Admin) -->
+                <div id="view-pengumuman" class="view-section hidden fade-in w-full">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <button onclick="bukaFormPengumuman()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg transition-all w-full sm:w-auto text-center flex items-center justify-center"><i class="fas fa-plus mr-2"></i> Buat Pengumuman Baru</button>
+                    </div>
+                    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden w-full">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-100">
+                                <thead class="bg-slate-50/50">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Tanggal</th>
+                                        <th class="px-6 py-4 text-left text-xs font-extrabold text-slate-500 uppercase">Judul & Isi</th>
+                                        <th class="px-6 py-4 text-right text-xs font-extrabold text-slate-500 uppercase">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pengumuman-tbody" class="bg-white divide-y divide-slate-100"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -470,7 +426,21 @@
                         </div>
                         <div><label class="block text-xs font-bold text-slate-700 mb-1.5">No. Telepon / WhatsApp</label><input type="text" id="w-telepon" placeholder="Opsional" class="w-full p-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"></div>
                         
-                        <div><label class="block text-xs font-bold text-slate-700 mb-1.5">Pekerjaan Utama</label><input type="text" id="w-pekerjaan" placeholder="Cth: Petani / Wiraswasta" class="w-full p-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1.5">Pekerjaan Utama</label>
+                            <select id="w-pekerjaan" class="w-full p-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Belum / Tidak Bekerja">Belum / Tidak Bekerja</option>
+                                <option value="Pelajar / Mahasiswa">Pelajar / Mahasiswa</option>
+                                <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+                                <option value="Pegawai Negeri / PNS">Pegawai Negeri / PNS</option>
+                                <option value="TNI / POLRI">TNI / POLRI</option>
+                                <option value="Pegawai Swasta">Pegawai Swasta</option>
+                                <option value="Wiraswasta / Pedagang">Wiraswasta / Pedagang</option>
+                                <option value="Petani / Pekebun">Petani / Pekebun</option>
+                                <option value="Buruh">Buruh</option>
+                                <option value="Pensiunan">Pensiunan</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
                         <div><label class="block text-xs font-bold text-slate-700 mb-1.5">Pendapatan per Bulan</label>
                             <select id="w-pendapatan" class="w-full p-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"><option value="Belum/Tidak Berpenghasilan">Belum/Tidak Berpenghasilan</option><option value="< 1 Juta">< 1 Juta</option><option value="1 Juta - 3 Juta">1 Juta - 3 Juta</option><option value="3 Juta - 5 Juta">3 Juta - 5 Juta</option><option value="> 5 Juta">> 5 Juta</option></select>
                         </div>
@@ -524,6 +494,22 @@
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md fade-in"><div class="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-3xl"><h3 class="text-base sm:text-lg font-extrabold">Akun Baru</h3><button onclick="closeModal('modal-pengguna')" class="text-slate-400 hover:text-slate-700"><i class="fas fa-times text-xl"></i></button></div><form id="form-pengguna" onsubmit="simpanPengguna(event)" class="p-4 sm:p-6 space-y-4"><div><label class="block text-xs sm:text-sm font-bold mb-1.5">Username</label><input type="text" id="pg-username" required class="w-full p-2.5 sm:p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none"></div><div><label class="block text-xs sm:text-sm font-bold mb-1.5">Password</label><input type="text" id="pg-password" required class="w-full p-2.5 sm:p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none"></div><div><label class="block text-xs sm:text-sm font-bold mb-1.5">Tugas / Wilayah</label><select id="pg-rt" required class="w-full p-2.5 sm:p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none"><option value="RT 01">RT 01</option><option value="RT 02">RT 02</option><option value="RT 03">RT 03</option><option value="RT 04">RT 04</option><option value="RT 05">RT 05</option><option value="RT 06">RT 06</option><option value="RT 07">RT 07</option><option value="RT 08">RT 08</option><option value="RT 09">RT 09</option><option value="LPMK">LPMK</option><option value="PKK">PKK</option><option value="Takmir">Takmir Masjid</option><option value="Muda Mudi">Muda Mudi</option><option value="Posyandu Balita">Posyandu Balita</option><option value="Posyandu Lansia">Posyandu Lansia</option></select></div><button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 sm:py-3.5 rounded-xl shadow-lg transition-all">Buat Akun</button></form></div>
     </div>
 
+    <!-- Modal Pengumuman -->
+    <div id="modal-pengumuman" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg fade-in">
+            <div class="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-3xl">
+                <h3 class="text-base sm:text-lg font-extrabold flex items-center"><i class="fas fa-bullhorn text-orange-500 mr-2"></i> Form Pengumuman</h3>
+                <button onclick="closeModal('modal-pengumuman')" class="text-slate-400 hover:text-slate-700"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <form id="form-pengumuman" onsubmit="simpanPengumuman(event)" class="p-4 sm:p-6 space-y-4">
+                <input type="hidden" id="p-id">
+                <div><label class="block text-xs sm:text-sm font-bold mb-1.5 text-slate-700">Judul Pengumuman</label><input type="text" id="p-judul" required class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-orange-500" placeholder="Cth: Pemberitahuan Kerja Bakti"></div>
+                <div><label class="block text-xs sm:text-sm font-bold mb-1.5 text-slate-700">Isi Pengumuman</label><textarea id="p-isi" required rows="4" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 resize-none" placeholder="Tuliskan pesan lengkap di sini..."></textarea></div>
+                <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-sm">Terbitkan Pengumuman</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Custom Confirm & Toast -->
     <div id="modal-confirm" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4"><div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 text-center fade-in"><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 text-amber-500 mb-4"><i class="fas fa-exclamation-triangle text-3xl"></i></div><h3 class="text-lg font-extrabold text-slate-800 mb-2">Konfirmasi Tindakan</h3><p id="confirm-msg" class="text-sm text-slate-600 mb-6 font-medium whitespace-pre-line"></p><div class="flex gap-3"><button onclick="closeModal('modal-confirm')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition-colors">Batal</button><button id="btn-confirm-yes" class="flex-1 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-rose-200 transition-colors">Yakin, Lanjutkan</button></div></div></div>
     <div id="toast" class="fixed bottom-5 right-5 sm:bottom-10 sm:right-10 bg-slate-800 text-white px-5 sm:px-6 py-3 sm:py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 font-medium text-sm flex items-center max-w-[90vw] sm:max-w-md"><i class="fas fa-check-circle text-green-400 mr-3 text-lg"></i> <span id="toast-msg">Pesan sukses</span></div>
@@ -533,7 +519,7 @@
         // KONFIGURASI APLIKASI
         // ====================================================
         const IS_PREVIEW = false; // GANTI JADI false JIKA SUDAH PUNYA URL GAS ASLI DAN AKAN DIDEPLOY KE BLOGGER
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbyWCEccLsPzv-cYyuWmev6JYs1yXmk3tl3Wp-sy-r_AEq5d168_hN0WVwe7501PK8QrYw/exec";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyWBwA4KVBJ8yfjRsUKXdelzCSFb87KDDLL-KTGUAOtvtyyoRSpqYme-O9LxjaNXZsjlQ/exec";
 
         let currentUser = null;
         let deferredPrompt; 
@@ -561,12 +547,15 @@
         ];
 
         let dbWarga = [
-            { id: 1, nik: '3404010101900001', kk: '3404010101900001', nama: 'Budi Santoso', tempat: 'Bantul', tgl: '1990-01-01', jk: 'L', domisili: 'Tetap', rt: 'RT 01', status: 'Aktif', organisasi: ['LPMK'], agama: 'Islam', status_kawin: 'Kawin', gol_darah: 'O', telepon: '08123456789', pekerjaan: 'Pegawai Negeri', pendapatan: '3 Juta - 5 Juta', hobi: 'Bersepeda', kesehatan: 'Sehat', bantuan: [] },
+            { id: 1, nik: '3404010101900001', kk: '3404010101900001', nama: 'Budi Santoso', tempat: 'Bantul', tgl: '1990-01-01', jk: 'L', domisili: 'Tetap', rt: 'RT 01', status: 'Aktif', organisasi: ['LPMK'], agama: 'Islam', status_kawin: 'Kawin', gol_darah: 'O', telepon: '08123456789', pekerjaan: 'Pegawai Negeri / PNS', pendapatan: '3 Juta - 5 Juta', hobi: 'Bersepeda', kesehatan: 'Sehat', bantuan: [] },
             { id: 2, nik: '3404010202950002', kk: '3404010101900001', nama: 'Siti Aminah', tempat: 'Bantul', tgl: '1995-02-02', jk: 'P', domisili: 'Tetap', rt: 'RT 01', status: 'Aktif', organisasi: ['PKK'], agama: 'Islam', status_kawin: 'Kawin', gol_darah: 'A', telepon: '08198765432', pekerjaan: 'Ibu Rumah Tangga', pendapatan: 'Belum/Tidak Berpenghasilan', hobi: 'Memasak', kesehatan: 'Asma', bantuan: ['PKH', 'BPNT'] },
-            { id: 3, nik: '3404010303800003', kk: '3404010303800003', nama: 'Joko Widodo', tempat: 'Solo', tgl: '1980-03-03', jk: 'L', domisili: 'Pengontrak', rt: 'RT 02', status: 'Aktif', organisasi: [], agama: 'Kristen', status_kawin: 'Cerai Mati', gol_darah: 'B', telepon: '0856123123', pekerjaan: 'Wiraswasta', pendapatan: '> 5 Juta', hobi: 'Membaca', kesehatan: 'Hipertensi', bantuan: [] }
+            { id: 3, nik: '3404010303800003', kk: '3404010303800003', nama: 'Joko Widodo', tempat: 'Solo', tgl: '1980-03-03', jk: 'L', domisili: 'Pengontrak', rt: 'RT 02', status: 'Aktif', organisasi: [], agama: 'Kristen', status_kawin: 'Cerai Mati', gol_darah: 'B', telepon: '0856123123', pekerjaan: 'Wiraswasta / Pedagang', pendapatan: '> 5 Juta', hobi: 'Membaca', kesehatan: 'Hipertensi', bantuan: [] }
         ];
 
         let dbMutasi = []; let dbKegiatan = []; let dbLaporan = [];
+        let dbPengumuman = [
+            { id: 1, tanggal: new Date().toISOString().split('T')[0], judul: 'Pengambilan Bantuan Tahap 3', isi: 'Diberitahukan kepada seluruh warga penerima bantuan agar mengambil dana di Balai Padukuhan besok pagi pukul 09.00 WIB.' }
+        ];
 
         async function loadFromMemory() {
             if (IS_PREVIEW) {
@@ -574,21 +563,23 @@
                     const mw = localStorage.getItem('sidukuh_warga'); if(mw && JSON.parse(mw).length > 0) dbWarga = JSON.parse(mw);
                     const mm = localStorage.getItem('sidukuh_mutasi'); if(mm) dbMutasi = JSON.parse(mm);
                     const mu = localStorage.getItem('sidukuh_users'); if(mu && JSON.parse(mu).length > 0) dbUsers = JSON.parse(mu);
+                    const mp = localStorage.getItem('sidukuh_pengumuman'); if(mp) dbPengumuman = JSON.parse(mp);
                 } catch(err) { }
             } else {
                 if(GAS_URL === "URL_DEPLOY_GAS_ANDA_DISINI" || GAS_URL === "") return;
-                try { const res = await fetch(GAS_URL + "?action=getData"); const data = await res.json(); if(data.users) dbUsers = data.users; if(data.warga) dbWarga = data.warga; if(data.mutasi) dbMutasi = data.mutasi; if(data.kegiatan) dbKegiatan = data.kegiatan; if(data.laporan) dbLaporan = data.laporan; } catch(e) { }
+                try { const res = await fetch(GAS_URL + "?action=getData"); const data = await res.json(); if(data.users) dbUsers = data.users; if(data.warga) dbWarga = data.warga; if(data.mutasi) dbMutasi = data.mutasi; if(data.kegiatan) dbKegiatan = data.kegiatan; if(data.laporan) dbLaporan = data.laporan; if(data.pengumuman) dbPengumuman = data.pengumuman; } catch(e) { }
             }
         }
 
         async function saveToMemory() {
             if (IS_PREVIEW) {
-                localStorage.setItem('sidukuh_warga', JSON.stringify(dbWarga)); localStorage.setItem('sidukuh_mutasi', JSON.stringify(dbMutasi)); localStorage.setItem('sidukuh_users', JSON.stringify(dbUsers));
+                localStorage.setItem('sidukuh_warga', JSON.stringify(dbWarga)); localStorage.setItem('sidukuh_mutasi', JSON.stringify(dbMutasi)); localStorage.setItem('sidukuh_users', JSON.stringify(dbUsers)); localStorage.setItem('sidukuh_pengumuman', JSON.stringify(dbPengumuman));
             } else {
                 if(GAS_URL === "URL_DEPLOY_GAS_ANDA_DISINI" || GAS_URL === "") return;
-                try { await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'saveData', users: dbUsers, warga: dbWarga, mutasi: dbMutasi, kegiatan: dbKegiatan, laporan: dbLaporan }) }); } catch(e) { }
+                try { await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'saveData', users: dbUsers, warga: dbWarga, mutasi: dbMutasi, kegiatan: dbKegiatan, laporan: dbLaporan, pengumuman: dbPengumuman }) }); } catch(e) { }
             }
         }
+
         loadFromMemory();
 
         function toggleSidebar() { const sb = document.getElementById('sidebar'); const ov = document.getElementById('sidebar-overlay'); if (sb.classList.contains('-translate-x-full')) { sb.classList.remove('-translate-x-full'); ov.classList.remove('hidden'); setTimeout(() => ov.classList.remove('opacity-0'), 10); } else closeSidebarMobile(); }
@@ -596,22 +587,22 @@
 
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('nav a').forEach(el => { el.classList.remove('bg-indigo-50', 'text-indigo-700', 'text-emerald-600', 'bg-emerald-50'); el.classList.add('text-slate-600'); });
+            document.querySelectorAll('nav a').forEach(el => { el.classList.remove('bg-indigo-50', 'text-indigo-700', 'bg-orange-50', 'text-orange-600'); el.classList.add('text-slate-600'); });
             document.getElementById(`view-${viewId}`)?.classList.remove('hidden');
             const nav = document.getElementById(`nav-${viewId}`); 
             if(nav) { 
                 nav.classList.remove('text-slate-600'); 
-                if(viewId === 'broadcast') nav.classList.add('bg-emerald-50', 'text-emerald-700');
+                if(viewId === 'pengumuman') nav.classList.add('bg-orange-50', 'text-orange-600');
                 else nav.classList.add('bg-indigo-50', 'text-indigo-700'); 
             }
             if(!currentUser) return; 
-            const titles = { 'dashboard': 'Dashboard', 'warga': 'Data Warga', 'mutasi': 'Mutasi', 'organisasi': 'Organisasi & Rapat', 'laporan': 'Laporan Bulanan', 'pengguna': 'Kelola Pengguna', 'broadcast': 'Broadcast Pesan WA' };
+            const titles = { 'dashboard': 'Dashboard', 'warga': 'Data Warga', 'mutasi': 'Mutasi', 'organisasi': 'Organisasi & Rapat', 'laporan': 'Laporan Bulanan', 'pengguna': 'Kelola Pengguna', 'pengumuman': 'Papan Pengumuman' };
             document.getElementById('header-title').innerText = titles[viewId] + (currentUser.role === 'RT' ? ` - ${currentUser.rt}` : '');
             if(window.innerWidth < 1024) closeSidebarMobile();
 
             if(viewId === 'dashboard') renderDashboard(); if(viewId === 'warga') renderTableWarga(); if(viewId === 'mutasi') renderTableMutasi();
             if(viewId === 'organisasi') renderOrganisasiTable(); if(viewId === 'laporan') renderLaporan(); if(viewId === 'pengguna' && currentUser.role === 'Dukuh') renderPenggunaTable();
-            if(viewId === 'broadcast' && currentUser.role === 'Dukuh') renderBroadcast();
+            if(viewId === 'pengumuman' && currentUser.role === 'Dukuh') renderPengumumanTable();
         }
 
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
@@ -667,6 +658,27 @@
         function hitungUmur(tgl) { if(!tgl) return 0; const td = new Date(); const bd = new Date(tgl); let age = td.getFullYear() - bd.getFullYear(); const m = td.getMonth() - bd.getMonth(); if (m < 0 || (m === 0 && td.getDate() < bd.getDate())) age--; return isNaN(age) ? 0 : age; }
 
         function renderDashboard() {
+            // Render Papan Pengumuman
+            const pBanner = document.getElementById('dashboard-pengumuman');
+            pBanner.innerHTML = '';
+            if (dbPengumuman && dbPengumuman.length > 0) {
+                dbPengumuman.sort((a,b) => b.id - a.id).forEach(p => {
+                    pBanner.innerHTML += `
+                    <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl shadow-lg p-1 animate-bounce-subtle" style="animation-duration: 4s;">
+                        <div class="bg-white/95 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex items-start gap-4">
+                            <div class="bg-orange-100 text-orange-600 p-3 rounded-full shrink-0"><i class="fas fa-bullhorn text-xl"></i></div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h4 class="font-extrabold text-slate-800 text-base">${p.judul}</h4>
+                                    <span class="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold">${p.tanggal}</span>
+                                </div>
+                                <p class="text-sm text-slate-600 font-medium whitespace-pre-line">${p.isi}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            }
+
             const mC = document.getElementById('dashboard-main-content'); const pC = document.getElementById('dashboard-posyandu-content');
             if (currentUser && currentUser.role === 'Organisasi' && currentUser.rt.includes('Posyandu')) { mC?.classList.add('hidden'); pC?.classList.remove('hidden'); return; }
             mC?.classList.remove('hidden'); pC?.classList.add('hidden');
@@ -724,7 +736,7 @@
                 else if (cat.startsWith('Agama_')) { const ag = cat.replace('Agama_', ''); data = data.filter(w => w.agama === ag); }
                 else if (cat.startsWith('Goldar_')) { const gd = cat.replace('Goldar_', ''); data = data.filter(w => w.gol_darah === gd); }
                 else if (cat.startsWith('Pendapatan_')) { const pd = cat.replace('Pendapatan_', ''); data = data.filter(w => w.pendapatan === pd); }
-                else if (cat.startsWith('Pekerjaan_')) { const pk = cat.replace('Pekerjaan_', '').toLowerCase(); data = data.filter(w => w.pekerjaan && w.pekerjaan.toLowerCase().includes(pk)); }
+                else if (cat.startsWith('Pekerjaan_')) { const pk = cat.replace('Pekerjaan_', ''); data = data.filter(w => w.pekerjaan === pk); }
             }
             const q = document.getElementById('search-warga')?.value.toLowerCase();
             if (q) data = data.filter(w => (w.nama||'').toLowerCase().includes(q) || (w.nik||'').toLowerCase().includes(q));
@@ -775,7 +787,7 @@
                 else if (cat.startsWith('Agama_')) { const ag = cat.replace('Agama_', ''); data = data.filter(w => w.agama === ag); }
                 else if (cat.startsWith('Goldar_')) { const gd = cat.replace('Goldar_', ''); data = data.filter(w => w.gol_darah === gd); }
                 else if (cat.startsWith('Pendapatan_')) { const pd = cat.replace('Pendapatan_', ''); data = data.filter(w => w.pendapatan === pd); }
-                else if (cat.startsWith('Pekerjaan_')) { const pk = cat.replace('Pekerjaan_', '').toLowerCase(); data = data.filter(w => w.pekerjaan && w.pekerjaan.toLowerCase().includes(pk)); }
+                else if (cat.startsWith('Pekerjaan_')) { const pk = cat.replace('Pekerjaan_', ''); data = data.filter(w => w.pekerjaan === pk); }
             }
             if(data.length === 0) { showToast("Tidak ada data untuk dicetak!"); return; }
 
@@ -854,7 +866,7 @@
             document.getElementById('w-kawin').value = w.status_kawin || 'Belum Kawin';
             document.getElementById('w-goldar').value = w.gol_darah || 'Tidak Tahu';
             document.getElementById('w-telepon').value = w.telepon || '';
-            document.getElementById('w-pekerjaan').value = w.pekerjaan || '';
+            document.getElementById('w-pekerjaan').value = w.pekerjaan || 'Belum / Tidak Bekerja';
             document.getElementById('w-pendapatan').value = w.pendapatan || 'Belum/Tidak Berpenghasilan';
             document.getElementById('w-hobi').value = w.hobi || '';
             document.getElementById('w-kesehatan').value = w.kesehatan || '';
@@ -886,223 +898,41 @@
         function renderLaporan() { const tb = document.getElementById('laporan-tbody'); tb.innerHTML = ''; const bk = document.getElementById('btn-kirim-laporan'); let d = dbLaporan; if (currentUser.role === 'RT') { bk.classList.remove('hidden'); bk.classList.add('flex'); d = d.filter(l => l.rt === currentUser.rt); } else { bk.classList.add('hidden'); bk.classList.remove('flex'); const f = document.getElementById('dukuh-filter').value; if (f !== 'Semua') d = d.filter(l => l.rt === f); } if (d.length === 0) { tb.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-sm text-slate-500 italic">Belum ada laporan.</td></tr>`; return; } d.slice().sort((a,b) => b.id - a.id).forEach(l => { tb.innerHTML += `<tr class="hover:bg-slate-50"><td class="px-4 py-4 text-xs font-extrabold">${l.bulan}</td><td class="px-4 py-4 text-xs font-bold text-indigo-600">${l.rt}</td><td class="px-4 py-4 text-xs font-bold">${l.total} Jiwa</td><td class="px-4 py-4 text-xs text-slate-500">L:${l.l}|P:${l.p}</td><td class="px-4 py-4 text-[10px] bg-slate-100 rounded text-slate-600 m-2 hidden md:block">${l.mutasi}</td><td class="px-4 py-4"><span class="px-2 py-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 rounded-lg"><i class="fas fa-check mr-1"></i> Terkirim</span><span class="text-[10px] text-slate-400 mt-1 block">${l.waktu}</span></td></tr>`; }); }
         function kirimLaporan() { const n = new Date(); const b = n.toLocaleString('id-ID', { month: 'long', year: 'numeric' }); const i = dbLaporan.findIndex(l => l.rt === currentUser.rt && l.bulan === b); customConfirm(i !== -1 ? `Kirim ulang laporan ${b}?` : `Kirim laporan ${b}?`, () => { const dW = getFilteredWarga(); const ma = dbMutasi.filter(m => { const md = new Date(m.tanggal); return m.rt === currentUser.rt && md.getMonth() === n.getMonth() && md.getFullYear() === n.getFullYear(); }); const nL = { id: Date.now(), bulan: b, rt: currentUser.rt, total: dW.length, l: dW.filter(w => w.jk === 'L').length, p: dW.filter(w => w.jk === 'P').length, mutasi: `Lahir:${ma.filter(m=>m.jenis==='Lahir').length} | Meninggal:${ma.filter(m=>m.jenis==='Meninggal').length} | Datang:${ma.filter(m=>m.jenis==='Datang').length} | Pindah:${ma.filter(m=>m.jenis==='Pergi').length}`, waktu: n.toLocaleString('id-ID', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}) }; if (i !== -1) dbLaporan[i] = nL; else dbLaporan.push(nL); saveToMemory(); showToast("Terkirim!"); renderLaporan(); }); }
         
-        // FUNGSI BROADCAST WA
-        function formatWaNumber(phone) {
-            if (!phone) return '';
-            let cleaned = String(phone).replace(/\D/g, '');
-            if (cleaned.startsWith('0')) cleaned = '62' + cleaned.substring(1);
-            else if (cleaned.startsWith('8')) cleaned = '62' + cleaned;
-            return cleaned;
-        }
-
-        let broadcastQueue = [];
-        let currentBroadcastIndex = 0;
-        let broadcastMsgTemplate = '';
-        let isBulkSending = false;
-
-        function renderBroadcast() {
-            document.getElementById('bc-target').value = 'Semua';
-            document.getElementById('bc-pesan').value = '';
-            isBulkSending = false;
-            previewBroadcast();
-        }
-
-        function previewBroadcast() {
-            isBulkSending = false;
-            const target = document.getElementById('bc-target').value;
-            const msgTemplate = document.getElementById('bc-pesan').value;
-            const tb = document.getElementById('bc-tbody'); tb.innerHTML = '';
-            
-            // Konversi ke String agar aman jika data dari sheet terbaca sebagai Number
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
-            
-            if (target === 'KK') {
-                let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; });
-            } else if (target.startsWith('RT')) {
-                d = d.filter(w => w.rt === target);
-            } else if (target !== 'Semua') {
-                d = d.filter(w => w.bantuan && w.bantuan.includes(target));
-            }
-
-            document.getElementById('bc-count').innerText = d.length;
-
-            // --- PENGATURAN ANTREAN MASSAL ---
-            broadcastQueue = d;
-            currentBroadcastIndex = 0;
-            broadcastMsgTemplate = msgTemplate;
-            const bulkContainer = document.getElementById('bulk-send-container');
-            const btnBulk = document.getElementById('btn-bulk-send');
-            const progText = document.getElementById('bulk-progress-text');
-
-            if (d.length > 0 && msgTemplate.trim() !== '') {
-                bulkContainer.classList.remove('hidden');
-                bulkContainer.classList.add('flex');
-                progText.innerHTML = `Siap mengirim ke <b>${d.length}</b> warga secara otomatis.`;
-                btnBulk.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> Mulai Kirim Otomatis`;
-                btnBulk.disabled = false;
-                btnBulk.onclick = toggleBulkSend;
-                btnBulk.className = "w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-all text-sm flex items-center justify-center";
-            } else {
-                bulkContainer.classList.add('hidden');
-                bulkContainer.classList.remove('flex');
-            }
-            // ----------------------------------
-
-            if (d.length === 0) {
-                tb.innerHTML = `<tr><td colspan="3" class="px-6 py-10 text-center text-sm text-slate-500 italic font-medium"><i class="fas fa-box-open text-3xl text-slate-300 mb-3 block"></i>Tiada penerima dengan nombor HP yang sah.</td></tr>`;
-                return;
-            }
-
-            d.forEach(w => {
-                const cleanPhone = formatWaNumber(w.telepon);
-                const personalizedMsg = msgTemplate.replace(/\[NAMA\]/g, w.nama);
-                const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(personalizedMsg)}`;
-                
-                let btnHtml = msgTemplate.trim() === '' ? 
-                    `<button disabled class="inline-flex items-center justify-center bg-slate-100 text-slate-400 px-4 py-2 rounded-xl font-bold text-[10px] sm:text-xs cursor-not-allowed"><i class="fab fa-whatsapp text-sm sm:mr-1.5"></i> <span class="hidden sm:inline">Tulis Pesan</span></button>` :
-                    `<a href="${waLink}" target="_blank" id="btn-wa-${w.id}" onclick="tandaiTerkirimIndividu(this)" class="inline-flex items-center justify-center bg-emerald-100 text-emerald-700 hover:bg-emerald-600 hover:text-white px-4 py-2 rounded-xl font-bold text-[10px] sm:text-xs transition-colors shadow-sm"><i class="fab fa-whatsapp text-sm sm:mr-1.5"></i> <span class="hidden sm:inline">Kirim WA</span></a>`;
-
-                tb.innerHTML += `
-                <tr class="hover:bg-slate-50 transition-colors" id="row-wa-${w.id}">
-                    <td class="px-6 py-4"><div class="text-sm font-bold text-slate-800">${w.nama}</div><div class="text-[10px] text-slate-500 font-bold mt-1">${w.rt} | ${w.domisili}</div></td>
-                    <td class="px-6 py-4 text-sm font-mono text-slate-600 font-bold">+${cleanPhone}</td>
-                    <td class="px-6 py-4 text-right">${btnHtml}</td>
-                </tr>`;
-            });
-        }
-
-        function tandaiTerkirimIndividu(btn) {
-            btn.classList.remove('bg-emerald-100', 'text-emerald-700', 'hover:bg-emerald-600', 'hover:text-white');
-            btn.classList.add('bg-slate-200', 'text-slate-500');
-            btn.innerHTML = '<i class="fas fa-check-double sm:mr-1.5 text-sm"></i> <span class="hidden sm:inline">Terkirim</span>';
-        }
-
-        function toggleBulkSend() {
-            const btnBulk = document.getElementById('btn-bulk-send');
-            if (isBulkSending) {
-                // Jeda Pengiriman
-                isBulkSending = false;
-                btnBulk.innerHTML = `<i class="fas fa-play mr-2"></i> Lanjut Otomatis (${currentBroadcastIndex}/${broadcastQueue.length})`;
-                btnBulk.classList.replace('bg-amber-500', 'bg-blue-600');
-                btnBulk.classList.replace('hover:bg-amber-600', 'hover:bg-blue-700');
-                showToast("Pengiriman otomatis dijeda sementara.");
-            } else {
-                // Mulai Pengiriman
-                isBulkSending = true;
-                btnBulk.innerHTML = `<i class="fas fa-pause mr-2"></i> Jeda Pengiriman`;
-                btnBulk.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'bg-blue-600', 'hover:bg-blue-700');
-                btnBulk.classList.add('bg-amber-500', 'hover:bg-amber-600');
-                showToast("Memulai pengiriman otomatis setiap 0.5 detik...");
-                processNextBulkSend();
-            }
-        }
-
-        function processNextBulkSend() {
-            if (!isBulkSending) return;
-
-            if (currentBroadcastIndex >= broadcastQueue.length) {
-                isBulkSending = false;
-                showToast("Pengiriman massal otomatis selesai!");
-                document.getElementById('bulk-progress-text').innerHTML = "<b>Selesai dikirim</b> ke semua target.";
-                const btnBulk = document.getElementById('btn-bulk-send');
-                btnBulk.innerHTML = `<i class="fas fa-check-double mr-2"></i> Selesai`;
-                btnBulk.disabled = true;
-                btnBulk.className = "w-full sm:w-auto bg-slate-300 text-slate-500 font-bold py-2.5 px-6 rounded-xl cursor-not-allowed text-sm flex items-center justify-center";
-                return;
-            }
-
-            const w = broadcastQueue[currentBroadcastIndex];
-            const cleanPhone = formatWaNumber(w.telepon);
-            const personalizedMsg = broadcastMsgTemplate.replace(/\[NAMA\]/g, w.nama);
-            const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(personalizedMsg)}`;
-            
-            // Perbarui UI Progress
-            currentBroadcastIndex++;
-            document.getElementById('bulk-progress-text').innerHTML = `Antrean: Mengirim <b>${currentBroadcastIndex}</b> dari <b>${broadcastQueue.length}</b><br><span class="text-[10px] text-slate-500">Target: ${w.nama}</span>`;
-            
-            // Tandai baris tabel terkirim
-            const rowBtn = document.getElementById(`btn-wa-${w.id}`);
-            if (rowBtn) tandaiTerkirimIndividu(rowBtn);
-
-            const rowTr = document.getElementById(`row-wa-${w.id}`);
-            if (rowTr) rowTr.classList.add('bg-emerald-50');
-
-            // Buka Tab WA
-            window.open(waLink, '_blank');
-
-            // Setengah Detik (500 ms) delay sebelum lanjut ke kontak berikutnya
-            setTimeout(() => {
-                if(isBulkSending) processNextBulkSend();
-            }, 500);
-        }
-
-        function copyAllWaNumbers() {
-            const target = document.getElementById('bc-target').value;
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
-            if (target === 'KK') { let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; }); } 
-            else if (target.startsWith('RT')) d = d.filter(w => w.rt === target);
-            else if (target !== 'Semua') d = d.filter(w => w.bantuan && w.bantuan.includes(target));
-            
-            if (d.length === 0) { showToast("Tiada nombor untuk disalin!"); return; }
-            const numbers = d.map(w => formatWaNumber(w.telepon)).join(', ');
-            
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(numbers).then(() => showToast(d.length + " Nombor Disalin!")).catch(() => fallbackCopyTextToClipboard(numbers, d.length));
-            } else {
-                fallbackCopyTextToClipboard(numbers, d.length);
-            }
-        }
-
-        function exportVCard() {
-            const target = document.getElementById('bc-target').value;
-            let d = dbWarga.filter(w => w.status === 'Aktif' && w.telepon && String(w.telepon).replace(/\D/g, '').length >= 8);
-            
-            if (target === 'KK') {
-                let s = new Set(); d = d.filter(w => { const k = String(w.kk).trim(); if(!s.has(k) && k !== '') { s.add(k); return true; } return false; });
-            } else if (target.startsWith('RT')) {
-                d = d.filter(w => w.rt === target);
-            } else if (target !== 'Semua') {
-                d = d.filter(w => w.bantuan && w.bantuan.includes(target));
-            }
-
-            if (d.length === 0) { showToast("Tidak ada kontak untuk disimpan!"); return; }
-
-            let vcardContent = "";
-            let prefix = target !== 'Semua' ? `[${target}] ` : '[Warga] ';
-
-            d.forEach(w => {
-                const cleanPhone = formatWaNumber(w.telepon);
-                vcardContent += "BEGIN:VCARD\nVERSION:3.0\n";
-                vcardContent += `FN:${prefix}${w.nama}\n`;
-                vcardContent += `TEL;TYPE=CELL:+${cleanPhone}\n`;
-                vcardContent += `ORG:Warga Dukuh Kuden\n`;
-                vcardContent += "END:VCARD\n";
-            });
-
-            const blob = new Blob([vcardContent], { type: 'text/vcard;charset=utf-8' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `Kontak_${target.replace(/\s+/g, '_')}.vcf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            showToast("Berhasil diunduh! Buka file di HP Anda.");
-        }
-
-        function fallbackCopyTextToClipboard(text, count) {
-            const el = document.createElement('textarea'); el.value = text;
-            el.style.position = 'fixed'; el.style.top = '0'; el.style.left = '0'; el.style.opacity = '0';
-            document.body.appendChild(el); el.focus(); el.select();
-            try { document.execCommand('copy'); showToast(count + " Nombor Disalin!"); } catch (err) { showToast("Gagal menyalin nombor!"); }
-            document.body.removeChild(el);
-        }
-
         function renderPenggunaTable() { const tb = document.getElementById('pengguna-tbody'); if(!tb) return; tb.innerHTML = ''; dbUsers.forEach(u => { const aksi = u.username === 'admin' ? '<span class="text-[10px] text-slate-400 italic">Bawaan Sistem</span>' : `<button onclick="hapusPengguna('${u.username}')" class="text-[10px] bg-rose-100 text-rose-700 px-2 py-1.5 rounded-lg font-bold">Hapus</button>`; tb.innerHTML += `<tr class="hover:bg-slate-50"><td class="px-4 py-4 text-xs font-bold">${u.username}</td><td class="px-4 py-4 text-xs font-mono text-slate-500">${u.password}</td><td class="px-4 py-4 hidden sm:table-cell"><span class="px-2 py-1 text-[10px] font-bold bg-indigo-100 text-indigo-700 rounded">${u.role}</span></td><td class="px-4 py-4 text-xs font-bold">${u.rt}</td><td class="px-4 py-4 text-right">${aksi}</td></tr>`; }); }
         function simpanPengguna(e) { e.preventDefault(); const u = document.getElementById('pg-username').value; const p = document.getElementById('pg-password').value; const w = document.getElementById('pg-rt').value; if(dbUsers.find(x => x.username === u)) { showToast("Gagal: Username terpakai!"); return; } let role = 'Organisasi'; if(w.startsWith('RT')) role = 'RT'; else if(w === 'Semua') role = 'Dukuh'; dbUsers.push({ username: u, password: p, role: role, rt: w, avatar: '' }); saveToMemory(); showToast("Akun Dibuat!"); closeModal('modal-pengguna'); renderPenggunaTable(); }
         function hapusPengguna(u) { if(u === 'admin') return; customConfirm(`Yakin hapus akun: ${u}?`, () => { dbUsers = dbUsers.filter(x => x.username !== u); saveToMemory(); showToast("Terhapus!"); renderPenggunaTable(); }); }
+
+        // FUNGSI PENGUMUMAN (ADMIN ONLY)
+        function renderPengumumanTable() {
+            const tb = document.getElementById('pengumuman-tbody'); if(!tb) return; tb.innerHTML = '';
+            if(dbPengumuman.length === 0) { tb.innerHTML = `<tr><td colspan="3" class="px-6 py-8 text-center text-sm text-slate-500 italic">Belum ada pengumuman.</td></tr>`; return; }
+            dbPengumuman.slice().sort((a,b) => b.id - a.id).forEach(p => {
+                tb.innerHTML += `
+                <tr class="hover:bg-slate-50">
+                    <td class="px-6 py-4 text-xs font-bold text-slate-600">${p.tanggal}</td>
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-slate-800 text-sm mb-1">${p.judul}</div>
+                        <div class="text-xs text-slate-500 max-w-md truncate">${p.isi}</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="hapusPengumuman(${p.id})" class="text-[10px] bg-rose-100 text-rose-700 px-2 py-1.5 rounded-lg font-bold"><i class="fas fa-trash"></i> Hapus</button>
+                    </td>
+                </tr>`;
+            });
+        }
+        function bukaFormPengumuman() { document.getElementById('form-pengumuman').reset(); document.getElementById('p-id').value = ''; openModal('modal-pengumuman'); }
+        function simpanPengumuman(e) {
+            e.preventDefault();
+            const judul = document.getElementById('p-judul').value; const isi = document.getElementById('p-isi').value;
+            dbPengumuman.push({ id: Date.now(), tanggal: new Date().toISOString().split('T')[0], judul: judul, isi: isi });
+            saveToMemory(); showToast("Pengumuman diterbitkan!"); closeModal('modal-pengumuman'); renderPengumumanTable(); renderDashboard();
+        }
+        function hapusPengumuman(id) {
+            customConfirm("Hapus pengumuman ini dari dashboard warga?", () => {
+                dbPengumuman = dbPengumuman.filter(p => p.id !== id);
+                saveToMemory(); showToast("Pengumuman dihapus!"); renderPengumumanTable(); renderDashboard();
+            });
+        }
     </script>
 </body>
 </html>
